@@ -2,7 +2,7 @@ import pino from "pino";
 import pinoHttp from "pino-http";
 import { logger } from "../system/logger";
 
-export const PORT = process.env.SERVER_PORT ?? "7979";
+export const PORT = process.env.SERVER_PORT ?? "3000";
 export const HOST = process.env.SERVER_HOST ?? "0.0.0.0";
 
 const serializers: {
