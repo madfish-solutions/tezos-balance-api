@@ -82,7 +82,6 @@ export class FastRpcClient extends RpcClient {
 
   getEntrypointsMemo = memoize(super.getEntrypoints.bind(this), {
     cacheKey: ([contract, opts]) => [contract, toOptsKey(opts)].join(""),
-    maxAge: this.memoizeMaxAge,
   });
 
   async getManagerKey(address: string, opts?: RPCOptions) {
