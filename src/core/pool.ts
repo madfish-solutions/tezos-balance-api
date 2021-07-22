@@ -1,21 +1,21 @@
-import { spawn, Pool, Worker, ModuleThread } from "threads";
+import path from "path";
+import Piscina from "piscina";
 import memoize from "p-memoize";
 
-type Balance = typeof import("./balance");
-
-const spawnWorker = () => spawn<Balance>(new Worker("./worker"));
-const pool = Pool(spawnWorker, { concurrency: 4 });
+const pool = new Piscina({
+  filename: path.resolve(__dirname, "worker.js"),
+  maxQueue: "auto",
+  concurrentTasksPerWorker: 1000,
+});
 
 export const loadBalance = memoize(fetchBalance, {
   cacheKey: ([account, assetSlug]) => `${account}_${assetSlug}`,
   maxAge: 60_000,
 });
 
-export function fetchBalance(account: string, assetSlug: string) {
-  return enqueue((b) => b.fetchBalance(account, assetSlug));
-}
-
-async function enqueue<T>(factory: (w: ModuleThread<Balance>) => Promise<T>) {
-  const result = await pool.queue(factory);
-  return result as T;
+export function fetchBalance(
+  account: string,
+  assetSlug: string
+): Promise<string> {
+  return pool.run({ account, assetSlug }, { name: "fetchBalance" });
 }

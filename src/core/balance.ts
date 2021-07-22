@@ -4,7 +4,13 @@ import retry from "async-retry";
 import { Tezos, loadContract, isFA2Token } from "../tez";
 import { toAsset } from "./helpers";
 
-export async function fetchBalance(account: string, assetSlug: string) {
+export async function fetchBalance({
+  account,
+  assetSlug,
+}: {
+  account: string;
+  assetSlug: string;
+}) {
   const asset = await toAsset(assetSlug);
 
   let nat: BigNumber | undefined;

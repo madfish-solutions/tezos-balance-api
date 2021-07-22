@@ -2,7 +2,6 @@ import { RpcClient } from "@taquito/rpc";
 import memoize from "p-memoize";
 
 import { onlyOncePerExec } from "../system/promise";
-import { repo } from "../repo";
 
 interface RPCOptions {
   block: string;
@@ -77,18 +76,8 @@ export class FastRpcClient extends RpcClient {
   });
 
   async getEntrypoints(contract: string, opts?: RPCOptions) {
-    const cacheKey = `entrypoints_${this.getRpcUrl()}_${contract}`;
-    try {
-      const cached = await repo.get(cacheKey);
-      if (cached) {
-        return JSON.parse(cached);
-      }
-    } catch {}
-
     opts = await this.loadLatestBlock(opts);
-    const result = await this.getEntrypointsMemo(contract, opts);
-    await repo.put(cacheKey, JSON.stringify(result));
-    return result;
+    return this.getEntrypointsMemo(contract, opts);
   }
 
   getEntrypointsMemo = memoize(super.getEntrypoints.bind(this), {
