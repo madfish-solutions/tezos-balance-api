@@ -1,6 +1,6 @@
 import express from "express";
 import helmet from "helmet";
-// import pinoHttp from "pino-http";
+import pinoHttp from "pino-http";
 import errorHandler from "errorhandler";
 import { logger } from "../system/logger";
 import { onClose } from "../system/gracefulShutdown";
@@ -9,7 +9,7 @@ import { PINO_LOGGER, PORT, HOST } from "./defaults";
 import { routes } from "./routes";
 
 const app = express()
-  // .use(pinoHttp(PINO_LOGGER))
+  .use(pinoHttp(PINO_LOGGER))
   .use(helmet())
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
