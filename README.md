@@ -55,6 +55,8 @@ The following endpoints are currently available:
 }
 ```
 
+- If the balance of the asset is zero, it will not be as a result of.
+
 # Running the service
 
 - NodeJS and yarn:
