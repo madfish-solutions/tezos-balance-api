@@ -59,7 +59,7 @@ build/Release
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+# .env
 .env.test
 
 # yarn v2
