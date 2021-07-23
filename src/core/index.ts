@@ -5,7 +5,9 @@ export async function fetchAllBalances(account: string, assetSlugs: string[]) {
   await Promise.all(
     assetSlugs.map(async (assetSlug) => {
       const balance = await loadBalance(account, assetSlug);
-      balances[assetSlug] = balance;
+      if (balance !== "0") {
+        balances[assetSlug] = balance;
+      }
     })
   );
   return balances;

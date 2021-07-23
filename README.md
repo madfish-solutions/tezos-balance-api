@@ -32,7 +32,7 @@ The following endpoints are currently available:
 { "message": "OK" }
 ```
 
-- [POST] `/balances`, where `body` structure looks like:
+- [POST] `/`, where `body` structure looks like:
 
 ### Request:
 

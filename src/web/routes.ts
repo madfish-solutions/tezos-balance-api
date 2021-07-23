@@ -13,7 +13,7 @@ type GetBalancesBody = {
   assetSlugs: string[];
 };
 
-routes.post("/balances", async (req, res) => {
+routes.post("/", async (req, res) => {
   const { account, assetSlugs }: GetBalancesBody = req.body;
 
   const balances = await fetchAllBalances(account, assetSlugs);
