@@ -28,9 +28,17 @@ routes.post("/", async (req, res) => {
 });
 
 const validateAccount = mem((address: string) => {
-  assert(isTezAddressValid(address), new BadRequest("Invalid account address"));
+  try {
+    assert(isTezAddressValid(address));
+  } catch {
+    throw new BadRequest("Invalid account address");
+  }
 });
 
 const validateAssetSlug = mem((slug: string) => {
-  assert(isAssetSlugValid(slug), new BadRequest("Invalid asset slug"));
+  try {
+    assert(isAssetSlugValid(slug));
+  } catch {
+    throw new BadRequest("Invalid asset slug");
+  }
 });
