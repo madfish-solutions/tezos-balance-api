@@ -1,10 +1,10 @@
 import memoize from "p-memoize";
 
-import { Asset, loadContract } from "../tez";
+import { Asset, loadContract, isTezAsset } from "../tez";
 
 export const toAsset = memoize(async (assetSlug: string): Promise<Asset> => {
   // For tezos
-  if (assetSlug === "tez") return assetSlug;
+  if (isTezAsset(assetSlug)) return assetSlug;
 
   // For token
   const [tokenContractAddress, tokenIdStr = "0"] = assetSlug.split("_");

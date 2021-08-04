@@ -15,11 +15,17 @@ export function isTezAddressValid(address: string) {
   return validateAddress(address) === ValidationResult.VALID;
 }
 
+export function isAssetSlugValid(slug: string) {
+  if (isTezAsset(slug)) return true;
+  const [address] = slug.split("_");
+  return isTezAddressValid(address);
+}
+
 export function isFA2Token(token: Token): token is FA2Token {
   return typeof token.id !== "undefined";
 }
 
-export function isTezAsset(asset: Asset): asset is "tez" {
+export function isTezAsset(asset: Asset | string): asset is "tez" {
   return asset === "tez";
 }
 
