@@ -3,6 +3,8 @@ import { Signer } from "@taquito/taquito";
 
 import { Asset, Token, FA2Token } from "./types";
 
+const NAT_PATTERN = /^\d+$/;
+
 export function toAssetSlug(asset: Asset) {
   return isTezAsset(asset) ? asset : toTokenSlug(asset.contract, asset.id);
 }
@@ -17,8 +19,8 @@ export function isTezAddressValid(address: string) {
 
 export function isAssetSlugValid(slug: string) {
   if (isTezAsset(slug)) return true;
-  const [address] = slug.split("_");
-  return isTezAddressValid(address);
+  const [address, id] = slug.split("_");
+  return isTezAddressValid(address) && NAT_PATTERN.test(id);
 }
 
 export function isFA2Token(token: Token): token is FA2Token {
