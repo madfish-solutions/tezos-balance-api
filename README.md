@@ -49,13 +49,8 @@ The following endpoints are currently available:
 ### Response:
 
 ```json
-{
-  "tez": "1000000",
-  "KT1WLerY6wbecTK9MjxTfkPvEQQ8HryPQrCM_0": "333999000000"
-}
+["1000000", "333999000000"]
 ```
-
-- If the balance of the asset is zero, it will not be as a result of.
 
 # Running the service
 
