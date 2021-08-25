@@ -9,24 +9,21 @@ const pool = new Piscina({
   concurrentTasksPerWorker: 1000,
 });
 
-export const loadBalance = memoize(fetchBalance, {
-  cacheKey: ([account, assetSlug]) => `${account}_${assetSlug}`,
+export const loadBalance = async (account: string, assetSlug: string) => {
+  const blockHash = await Tezos.rpc.getBlockHash();
+  return loadBalancePure(account, assetSlug, blockHash);
+};
+
+export const loadBalancePure = memoize(fetchBalance, {
+  cacheKey: ([account, assetSlug, blockHash]) =>
+    `${account}_${assetSlug}_${blockHash}`,
+  maxAge: 60_000,
 });
 
 export function fetchBalance(
   account: string,
-  assetSlug: string
+  assetSlug: string,
+  _blockHash: string
 ): Promise<string> {
   return pool.run({ account, assetSlug }, { name: "fetchBalance" });
 }
-
-let latestBlockHash: string | undefined;
-(async function cleanBalancesCacheAndDefer() {
-  const blockHash = await Tezos.rpc.getBlockHash();
-  if (latestBlockHash && blockHash !== latestBlockHash) {
-    memoize.clear(loadBalance);
-  }
-
-  latestBlockHash = blockHash;
-  setTimeout(cleanBalancesCacheAndDefer, 1_000);
-})();
