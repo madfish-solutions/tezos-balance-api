@@ -1,13 +1,15 @@
-import path from "path";
-import Piscina from "piscina";
+// import path from "path";
+// import Piscina from "piscina";
 import memoize from "p-memoize";
 import { Tezos } from "../tez";
 
-const pool = new Piscina({
-  filename: path.resolve(__dirname, "worker.js"),
-  maxQueue: "auto",
-  concurrentTasksPerWorker: 100000,
-});
+import { fetchBalance as fetchBalancePure } from "./balance";
+
+// const pool = new Piscina({
+//   filename: path.resolve(__dirname, "worker.js"),
+//   maxQueue: "auto",
+//   concurrentTasksPerWorker: 100000,
+// });
 
 export const loadBalance = async (account: string, assetSlug: string) => {
   const blockHash = await Tezos.rpc.getBlockHash();
@@ -25,5 +27,6 @@ export function fetchBalance(
   assetSlug: string,
   _blockHash: string
 ): Promise<string> {
-  return pool.run({ account, assetSlug }, { name: "fetchBalance" });
+  return fetchBalancePure({ account, assetSlug });
+  // return pool.run({ account, assetSlug }, { name: "fetchBalance" });
 }
