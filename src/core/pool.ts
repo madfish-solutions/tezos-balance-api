@@ -6,7 +6,7 @@ import { Tezos } from "../tez";
 const pool = new Piscina({
   filename: path.resolve(__dirname, "worker.js"),
   maxQueue: "auto",
-  concurrentTasksPerWorker: 1000,
+  concurrentTasksPerWorker: 100000,
 });
 
 export const loadBalance = async (account: string, assetSlug: string) => {
